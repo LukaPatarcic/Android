@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">My Application</string>
+    <string name="celsius">Celsius</string>
+    <string name="fahrenheit">Fahrenheit</string>
+    <string name="convert">Convert</string>
+    <string name="enterTemeprature">Enter temeprature</string>
+
+</resources>
