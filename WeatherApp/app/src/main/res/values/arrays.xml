@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="pref_units_values">
+        <item>metric</item>
+        <item>imperial</item>
+    </string-array>
+
+    <string-array name="pref_units_options">
+        <item >Metric</item>
+        <item >Imperial</item>
+    </string-array>
+
+    <string-array name="pref_location_values">
+        <item>3189595</item>
+        <item>2643743</item>
+        <item>5128581</item>
+        <item>3054643</item>
+        <item>2761369</item>
+    </string-array>
+
+    <string-array name="pref_location_options">
+        <item>Subotica</item>
+        <item>London</item>
+        <item>New York</item>
+        <item>Budapest</item>
+        <item>Vienna</item>
+    </string-array>
+</resources>
