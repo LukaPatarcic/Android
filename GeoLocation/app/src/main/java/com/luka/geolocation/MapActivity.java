@@ -58,7 +58,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     String[] data;
     GoogleMap map;
     Integer counter = 0;
-    Integer counter2 = 0;
+    boolean isOnline;
+    Timer timer = new Timer();
     int markerLength;
 
     @Override
@@ -66,10 +67,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
         this.getSupportActionBar().show();
-
-//        final ActionBar actionBar = getActionBar();
-//        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -87,13 +84,16 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     @Override
     protected void onStart() {
         super.onStart();
-        new Timer().scheduleAtFixedRate(new TimerTask(){
+
+        timer.scheduleAtFixedRate(new TimerTask(){
             @Override
             public void run(){
                 GetDataFromServer getDataFromServer = new GetDataFromServer();
                 getDataFromServer.execute();
             }
         },0,5000);
+
+
 
 
     }
@@ -151,6 +151,15 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         return super.onOptionsItemSelected(item);
     }
 
+    public boolean isOnline() {
+        ConnectivityManager cm = (ConnectivityManager) this
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetworkInfo = cm.getActiveNetworkInfo();
+        return activeNetworkInfo != null;
+
+    }
+
 
     private class GetDataFromServer extends AsyncTask<String,Void,String> {
 
@@ -158,8 +167,18 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         @SuppressLint("StaticFieldLeak")
         @Override
         protected String doInBackground(String... strings) {
-            String response = getServerResponse();
-            return response;
+            isOnline = isOnline();
+            if(isOnline) {
+                String response = getServerResponse();
+                return response;
+            } else {
+                timer.cancel();
+                Intent i = new Intent(MapActivity.this, MainActivity.class);
+                startActivity(i);
+                return "";
+            }
+
+
         }
 
         @Override

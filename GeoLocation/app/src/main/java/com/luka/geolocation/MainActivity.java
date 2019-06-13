@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
     private void checkAppState() {
         if (AppStatus.isLocationEnabled(this) && AppStatus.getInstance(this).isOnline()) {
             setCurrentLocation();
-            if (longitude == 0 || latitude == 0) {
+            if (longitude == 0.0 || latitude == 0.0) {
                 Toast.makeText(this, "Could not find your location", Toast.LENGTH_LONG).show();
             } else {
                 String latAndLong = latitude + ";" + longitude;
@@ -141,12 +141,19 @@ public class MainActivity extends AppCompatActivity {
     public BroadcastReceiver locationReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-            boolean statusOfGPS = manager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-            if (statusOfGPS) {
-                checkAppState();
-            } else {
-                checkAppState();
+            if (intent.getAction().matches("android.location.PROVIDERS_CHANGED")) {
+
+
+                LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+                boolean isGpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+
+                // START DIALOG ACTIVITY
+                if (isGpsEnabled) {
+                    checkAppState();
+                } else {
+                    checkAppState();
+                }
+
             }
 
         }
