@@ -22,6 +22,8 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
@@ -29,6 +31,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -79,6 +82,19 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        Button buttonOne = (Button) findViewById(R.id.btn_zoom);
+        buttonOne.setOnClickListener(new Button.OnClickListener() {
+            public void onClick(View v) {
+                map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat,lng), 1));
+
+                CameraPosition cameraPosition = new CameraPosition.Builder()
+                        .target(new LatLng(lat, lng))
+                        .zoom(1)
+                        .build();
+                map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+            }
+        });
     }
 
     @Override
@@ -92,9 +108,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 getDataFromServer.execute();
             }
         },0,5000);
-
-
-
 
     }
 
@@ -186,7 +199,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
             LatLng myLocation = new LatLng(lat, lng);
             map.clear();
-            map.addMarker(new MarkerOptions().position(myLocation).title("My Location"));
+            map.addMarker(new MarkerOptions().position(myLocation).title("My Location").icon(BitmapDescriptorFactory.fromResource(R.drawable.branko)));
             if(counter == 0) {
                 map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat,lng), 13));
 
@@ -208,7 +221,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 Double lng = Double.parseDouble(dataArray[1]);
                 String name = dataArray[2];
                 LatLng OtherLocation = new LatLng(lat,lng);
-                map.addMarker(new MarkerOptions().position(OtherLocation).title(name));
+                map.addMarker(new MarkerOptions().position(OtherLocation).title(name).icon(BitmapDescriptorFactory.fromResource(R.drawable.branko)));
             }
         }
 

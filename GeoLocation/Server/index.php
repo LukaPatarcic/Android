@@ -1,10 +1,10 @@
 <?php
 if($_SERVER['REQUEST_METHOD'] == 'POST') {
     require_once "db_config.php";
-    $mac = $_POST['mac'] ?? 'not set';
-    $lat = trim($_POST['latitude']) ?? 'not set';
-    $long = trim($_POST['longitude']) ?? 'not set';
-    $name = trim($_POST['name']) ?? 'not set';
+    $mac = mysqli_real_escape_string($connect,trim($_POST['mac']) ?? 'not set');
+    $lat = mysqli_real_escape_string($connect,trim($_POST['latitude']) ?? 'not set');
+    $long = mysqli_real_escape_string($connect,trim($_POST['longitude']) ?? 'not set');
+    $name = mysqli_real_escape_string($connect,trim($_POST['name']) ?? 'not set');
 
     $sql = "SELECT * FROM location WHERE mac_address = '$mac'";
     $query = mysqli_query($connect,$sql);
