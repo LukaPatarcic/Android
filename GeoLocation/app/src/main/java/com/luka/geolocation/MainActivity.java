@@ -58,11 +58,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         deviceName = android.os.Build.MANUFACTURER + " " + android.os.Build.MODEL;
         textView = findViewById(R.id.loading);
-        this.registerReceiver(this.wifiReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
-        this.registerReceiver(this.locationReceiver, new IntentFilter(LocationManager.PROVIDERS_CHANGED_ACTION));
-
     }
-
 
     private final LocationListener locationListener = new LocationListener() {
         @Override
@@ -124,41 +120,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public BroadcastReceiver wifiReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            ConnectivityManager connectivityManager = ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE));
-            NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-            if (networkInfo != null && networkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
-                if (networkInfo.isConnected()) {
-                    checkAppState();
-                } else {
-                    checkAppState();
-                }
-            }
-        }
-    };
-
-    public BroadcastReceiver locationReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().matches("android.location.PROVIDERS_CHANGED")) {
-
-
-                LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-                boolean isGpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-
-                // START DIALOG ACTIVITY
-                if (isGpsEnabled) {
-                    checkAppState();
-                } else {
-                    checkAppState();
-                }
-
-            }
-
-        }
-    };
 
     protected void setCurrentLocation() {
 
